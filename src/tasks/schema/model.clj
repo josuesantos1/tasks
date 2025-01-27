@@ -9,3 +9,6 @@
    (s/required-key :task/title)       s/Str 
    (s/optional-key :task/description) s/Str
    (s/required-key :task/status)      Status})
+
+(s/defschema Tasks
+  [Task])
