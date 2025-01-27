@@ -11,12 +11,13 @@
   [task :- schema.in/Task
    datomic]
   (-> task
-      tasks.adapter/in->schema
-      (database.tasks/insert datomic)))
+      tasks.adapter/in->model
+      (database.tasks/insert datomic)
+      tasks.adapter/model->out))
 
 (s/defn all-tasks :- schema.out/Tasks
   [datomic]
   (-> datomic 
       d/db
       database.tasks/find-all-tasks
-      tasks.adapter/schemas->out))
+      tasks.adapter/models->out))

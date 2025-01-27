@@ -5,20 +5,20 @@
    [tasks.schema.in :as schema.in]
    [tasks.schema.out :as schema.out]))
 
-(s/defn in->schema :- schema.model/Task
+(s/defn in->model :- schema.model/Task
   [{:keys [title description]} :- schema.in/Task]
   {:task/id          (random-uuid)
    :task/title       title 
    :task/description description
    :task/status      :task.status/todo})
 
-(s/defn schema->out :- schema.out/Task
+(s/defn model->out :- schema.out/Task
   [{:task/keys [id title description status]} :- schema.model/Task]
   {:id          id
    :title       title
    :description description
    :status      (name status)})
 
-(s/defn schemas->out :- schema.out/Tasks
+(s/defn models->out :- schema.out/Tasks
   [tasks :- schema.model/Tasks]
-  (map schema->out tasks))
+  (map model->out tasks))
