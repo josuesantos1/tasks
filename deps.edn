@@ -1,9 +1,21 @@
 {:paths   ["src" "resources"]
- :deps    {org.clojure/clojure    {:mvn/version "1.12.0"}
-           ring/ring              {:mvn/version "1.12.2"}
-           metosin/reitit         {:mvn/version "0.7.1"}
-           metosin/muuntaja       {:mvn/version "0.6.10"} 
-           org.slf4j/slf4j-simple {:mvn/version "2.0.16"}}
+ :deps    {org.clojure/clojure         {:mvn/version "1.12.0"}
+           ring/ring                   {:mvn/version "1.12.2"}
+           metosin/reitit              {:mvn/version "0.7.1"}
+           metosin/muuntaja            {:mvn/version "0.6.10"}
+           org.slf4j/slf4j-simple      {:mvn/version "2.0.16"}
+           metosin/reitit-spec         {:mvn/version "0.7.2"}
+           metosin/reitit-schema       {:mvn/version "0.7.2"}
+
+           metosin/reitit-middleware   {:mvn/version "0.7.2"}
+           metosin/reitit-interceptors {:mvn/version "0.7.2"}
+           metosin/reitit-swagger      {:mvn/version "0.7.2"}
+           fi.metosin/reitit-openapi   {:mvn/version "0.7.2"}
+           metosin/reitit-swagger-ui   {:mvn/version "0.7.2"}
+           metosin/reitit-frontend     {:mvn/version "0.7.2"}
+           metosin/reitit-sieppari     {:mvn/version "0.7.2"}
+           metosin/reitit-pedestal     {:mvn/version "0.7.2"}
+           metosin/ring-swagger-ui     {:mvn/version "5.9.0"}}
  :aliases {:repl {:extra-deps {nrepl/nrepl       {:mvn/version "1.3.0-beta4"}
                                cider/cider-nrepl {:mvn/version "0.49.2"}}
                   :main-opts  ["-m" "nrepl.cmdline" "--middleware" "[cider.nrepl/cider-middleware]"]}
