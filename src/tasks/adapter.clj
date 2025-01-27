@@ -7,10 +7,10 @@
 
 (s/defn in->schema :- schema.model/Task
   [{:keys [title description]} :- schema.in/Task]
-  {:id          (random-uuid)
-   :title       title 
-   :description description
-   :status      :task/todo})
+  {:task/id          (random-uuid)
+   :task/title       title 
+   :task/description description
+   :task/status      :task.status/todo})
 
 (s/defn schema->out :- schema.out/Task
   [{:task/keys [id title description status]} :- schema.model/Task]
