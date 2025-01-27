@@ -6,6 +6,7 @@
            org.slf4j/slf4j-simple      {:mvn/version "2.0.16"}
            metosin/reitit-spec         {:mvn/version "0.7.2"}
            metosin/reitit-schema       {:mvn/version "0.7.2"}
+           com.datomic/peer            {:mvn/version "1.0.7180"}
 
            metosin/reitit-middleware   {:mvn/version "0.7.2"}
            metosin/reitit-interceptors {:mvn/version "0.7.2"}
