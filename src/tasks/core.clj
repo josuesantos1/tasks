@@ -15,7 +15,9 @@
    [reitit.swagger-ui :as swagger-ui]
    [ring.adapter.jetty :as ring.jetty]
    [schema.core :as s]
-   [tasks.wire.out :as wire.out]))
+   [tasks.wire.in :as wire.in]
+   [tasks.wire.out :as wire.out]
+   [reitit.coercion.schema]))
 
 (defonce server (atom nil))
 
@@ -33,14 +35,42 @@
                               :version "0.0.1"}}
              :handler (openapi/create-openapi-handler)}}]
      ["/tasks"
-      {:tags ["tasks"]}
-      [""
-       {:get {:summary "return all tasks"}
-        :handler (fn [_]
-                   {:status 200
-                    :body "tasks"})}]]]
+      {:tags ["tasks"]
+       :get  {:summary   "Return all tasks"
+              :responses {200 {:body wire.out/Tasks}}
+              :handler   (fn [_]
+                           {:status 200
+                            :body   [{:id          #uuid "123e4567-e89b-12d3-a456-426614174000"
+                                      :title       "test"
+                                      :description "tests"
+                                      :status      "open"}]})}
+       :post {:summary    "Create a task"
+              :parameters {:body wire.in/Task}
+              :responses  {201 {:schema wire.out/Tasks}}
+              :handler    (fn [{{:keys [body]} :parameters}]
+                            {:status 201
+                             :body   body})}}
+      ["/:id"
+       {:tags   ["tasks"]
+        :put    {:summary    "Update a tasks by :id"
+                 :parameters {:path {:id s/Uuid}
+                              :body wire.in/Task}
+                 :responses  {200 {:schema wire.out/Tasks}
+                              204 {:body {:error s/Str}}}
+                 :handler    (fn [{{:keys [body]} :parameters}]
+                               {:status 200
+                                :body   body})}
+        :delete {:summary    "Delete a tasks by :id"
+                 :parameters {:path {:id s/Uuid}
+                              :body wire.in/Task}
+                 :responses  {200 {:schema wire.out/Tasks}
+                              204 {:body {:error s/Str}}}
+                 :handler    (fn [{{:keys [body]} :parameters}]
+                               {:status 200
+                                :body   body})}}]]]
     {:exception pretty/exception
-     :data {:muuntaja m/instance
+     :data {:coercion reitit.coercion.schema/coercion
+            :muuntaja m/instance
             :middleware [swagger/swagger-feature
                          parameters/parameters-middleware
                          muuntaja/format-negotiate-middleware
