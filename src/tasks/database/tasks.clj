@@ -7,4 +7,12 @@
 (s/defn insert :- schema.model/Task
   [task :- schema.model/Task
    datomic]
-  (d/transact datomic task))
+  (d/transact datomic [task])
+  task)
+
+(s/defn find-all-tasks :- schema.model/Tasks
+  [db]
+  (->> db 
+       (d/q '[:find (pull ?t [*])
+                 :where [?t :task/id _]])
+       (map first)))
