@@ -1,4 +1,4 @@
-(ns tasks.wire.in 
+(ns tasks.schema.in 
   (:require
    [schema.core :as s]))
 
