@@ -3,6 +3,7 @@
   (:require
    [muuntaja.core :as m]
    [reitit.coercion.malli]
+   [reitit.coercion.schema]
    [reitit.coercion.spec]
    [reitit.dev.pretty :as pretty]
    [reitit.openapi :as openapi]
@@ -15,9 +16,10 @@
    [reitit.swagger-ui :as swagger-ui]
    [ring.adapter.jetty :as ring.jetty]
    [schema.core :as s]
-   [tasks.wire.in :as wire.in]
-   [tasks.wire.out :as wire.out]
-   [reitit.coercion.schema]))
+   [tasks.controller]
+   [tasks.database.config :refer [datomic]]
+   [tasks.schema.in :as schema.in]
+   [tasks.schema.out :as schema.out]))
 
 (defonce server (atom nil))
 
@@ -37,7 +39,7 @@
      ["/tasks"
       {:tags ["tasks"]
        :get  {:summary   "Return all tasks"
-              :responses {200 {:body wire.out/Tasks}}
+              :responses {200 {:body schema.out/Tasks}}
               :handler   (fn [_]
                            {:status 200
                             :body   [{:id          #uuid "123e4567-e89b-12d3-a456-426614174000"
@@ -45,25 +47,24 @@
                                       :description "tests"
                                       :status      "open"}]})}
        :post {:summary    "Create a task"
-              :parameters {:body wire.in/Task}
-              :responses  {201 {:schema wire.out/Tasks}}
+              :parameters {:body schema.in/Task}
+              :responses  {201 {:schema schema.out/Tasks}}
               :handler    (fn [{{:keys [body]} :parameters}]
-                            {:status 201
-                             :body   body})}}
+                            (tasks.controller/create-task body datomic))}}
       ["/:id"
        {:tags   ["tasks"]
         :put    {:summary    "Update a tasks by :id"
                  :parameters {:path {:id s/Uuid}
-                              :body wire.in/Task}
-                 :responses  {200 {:schema wire.out/Tasks}
+                              :body schema.in/Task}
+                 :responses  {200 {:schema schema.out/Tasks}
                               204 {:body {:error s/Str}}}
                  :handler    (fn [{{:keys [body]} :parameters}]
                                {:status 200
                                 :body   body})}
         :delete {:summary    "Delete a tasks by :id"
                  :parameters {:path {:id s/Uuid}
-                              :body wire.in/Task}
-                 :responses  {200 {:schema wire.out/Tasks}
+                              :body schema.in/Task}
+                 :responses  {200 {:schema schema.out/Tasks}
                               204 {:body {:error s/Str}}}
                  :handler    (fn [{{:keys [body]} :parameters}]
                                {:status 200
