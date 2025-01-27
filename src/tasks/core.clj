@@ -42,10 +42,7 @@
               :responses {200 {:body schema.out/Tasks}}
               :handler   (fn [_]
                            {:status 200
-                            :body   [{:id          #uuid "123e4567-e89b-12d3-a456-426614174000"
-                                      :title       "test"
-                                      :description "tests"
-                                      :status      "open"}]})}
+                            :body   (tasks.controller/all-tasks datomic)})}
        :post {:summary    "Create a task"
               :parameters {:body schema.in/Task}
               :responses  {201 {:schema schema.out/Tasks}}
