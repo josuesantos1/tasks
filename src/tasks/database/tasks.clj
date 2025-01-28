@@ -16,3 +16,9 @@
        (d/q '[:find (pull ?t [*])
                  :where [?t :task/id _]])
        (map first)))
+
+(s/defn update-task :- schema.model/Task
+  [task :- schema.model/Task
+   datomic]
+  (d/transact datomic [task])
+  task)
