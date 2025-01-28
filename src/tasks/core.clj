@@ -61,13 +61,12 @@
                                {:status 200
                                 :body   (tasks.controller/update->task (:id path) body datomic)})}
         :delete {:summary    "Delete a tasks by :id"
-                 :parameters {:path {:id s/Uuid}
-                              :body schema.in/Task}
-                 :responses  {200 {:schema schema.out/Tasks}
+                 :parameters {:path {:id s/Uuid}}
+                 :responses  {200 {:schema s/Str}
                               204 {:body {:error s/Str}}}
-                 :handler    (fn [{{:keys [body]} :parameters}]
+                 :handler    (fn [{{:keys [path]} :parameters}]
                                {:status 200
-                                :body   body})}}]]]
+                                :body   (tasks.controller/delete-task (:id path) datomic)})}}]]]
     {:exception pretty/exception
      :data {:coercion reitit.coercion.schema/coercion
             :muuntaja m/instance
