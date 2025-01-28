@@ -1,0 +1,5 @@
+/test
+/.clj-kondo
+.cpcache
+.lsp
+.git
