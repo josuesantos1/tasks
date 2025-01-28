@@ -23,10 +23,15 @@
       tasks.adapter/models->out))
 
 (s/defn update->task :- schema.out/Task
-  [id :- s/Uuid
+  [task-id :- s/Uuid
    task :- schema.in/Task
    datomic]
   (-> task
-       (tasks.adapter/model-update->model id)
+       (tasks.adapter/in-update->model task-id)
        (database.tasks/update-task datomic)
        (tasks.adapter/model->out)))
+
+(s/defn delete-task :- s/Str
+  [task-id :- s/Uuid
+   datomic]
+  (database.tasks/delete-task task-id datomic))

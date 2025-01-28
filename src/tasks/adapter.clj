@@ -33,7 +33,7 @@
    :description description
    :status      (name status)})
 
-(s/defn model-update->model :- schema.model/Task
+(s/defn in-update->model :- schema.model/Task
   [{:keys [title description status]} :- schema.in/UpdateTask
    task-id :- s/Uuid]
   (assoc-some
