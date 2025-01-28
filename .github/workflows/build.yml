@@ -1,0 +1,20 @@
+name: build
+
+on: [push]
+
+jobs: 
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+            - name: Install clojure tools
+              uses: DeLaGuardo/setup-clojure@13.0
+              with: 
+                cli: latest
+            - name: Install rlwrap
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y rlwrap
+            - name: build clojure
+              run: clj -T:build uber
