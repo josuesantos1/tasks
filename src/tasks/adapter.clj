@@ -31,13 +31,13 @@
   {:id          id
    :title       title
    :description description
-   :status      (name status)})
+   :status      (some-> status name)})
 
 (s/defn in-update->model :- schema.model/Task
   [{:keys [title description status]} :- schema.in/UpdateTask
    task-id :- s/Uuid]
   (assoc-some
-   {:task/id          task-id}
+   {:task/id task-id}
    :task/title       title
    :task/description description
    :task/status      (some->> status (namespaced "task.status"))))
