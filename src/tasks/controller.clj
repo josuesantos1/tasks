@@ -21,3 +21,12 @@
       d/db
       database.tasks/find-all-tasks
       tasks.adapter/models->out))
+
+(s/defn update->task :- schema.out/Task
+  [id :- s/Uuid
+   task :- schema.in/Task
+   datomic]
+  (-> task
+       (tasks.adapter/model-update->model id)
+       (database.tasks/update-task datomic)
+       (tasks.adapter/model->out)))
