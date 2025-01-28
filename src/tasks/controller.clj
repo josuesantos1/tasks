@@ -17,7 +17,7 @@
 
 (s/defn all-tasks :- schema.out/Tasks
   [datomic]
-  (-> datomic 
+  (some-> datomic 
       d/db
       database.tasks/find-all-tasks
       tasks.adapter/models->out))

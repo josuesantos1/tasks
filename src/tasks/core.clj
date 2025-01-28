@@ -17,7 +17,7 @@
    [ring.adapter.jetty :as ring.jetty]
    [schema.core :as s]
    [tasks.controller]
-   [tasks.database.config :refer [datomic]]
+   [tasks.database.config :refer [create-schema datomic]]
    [tasks.schema.in :as schema.in]
    [tasks.schema.out :as schema.out]))
 
@@ -93,6 +93,7 @@
 (defn -main
   [& _]
   (prn "[+] starting server...")
+  (create-schema)
   (reset! server (start)))
 
 (comment
