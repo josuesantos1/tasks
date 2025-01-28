@@ -57,9 +57,7 @@
                  :responses  {200 {:schema schema.out/Tasks}
                               204 {:body {:error s/Str}}}
                  :handler    (fn [{{:keys [body path]} :parameters}]
-                               (prn path)
-                               {:status 200
-                                :body   (tasks.controller/update->task (:id path) body datomic)})}
+                               (tasks.controller/update->task (:id path) body datomic))}
         :delete {:summary    "Delete a tasks by :id"
                  :parameters {:path {:id s/Uuid}}
                  :responses  {200 {:schema s/Str}

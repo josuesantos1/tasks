@@ -26,10 +26,15 @@
   [task-id :- s/Uuid
    task :- schema.in/Task
    datomic]
-  (-> task
-       (tasks.adapter/in-update->model task-id)
-       (database.tasks/update-task datomic)
-       (tasks.adapter/model->out)))
+  (let [{id :db/id} (database.tasks/find-task-by-id task-id (d/db datomic))]
+    (if id
+      {:status 200
+       :body   (-> task
+                   (tasks.adapter/in-update->model task-id)
+                   (database.tasks/update-task datomic)
+                   (tasks.adapter/model->out))}
+      {:body   {:error "Not Found"}
+       :status 404})))
 
 (s/defn delete-task :- s/Str
   [task-id :- s/Uuid
@@ -37,7 +42,7 @@
   (let [{id :db/id} (database.tasks/find-task-by-id task-id (d/db datomic))]
     (if id
       (do (database.tasks/delete-task id datomic)
-          {:body "Deleted"
+          {:body   "Deleted"
            :status 200})
-      {:body {:error "Not Found"}
+      {:body   {:error "Not Found"}
        :status 404})))
