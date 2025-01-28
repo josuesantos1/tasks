@@ -42,7 +42,7 @@
   (let [{id :db/id} (database.tasks/find-task-by-id task-id (d/db datomic))]
     (if id
       (do (database.tasks/delete-task id datomic)
-          {:body   "Deleted"
+          {:body   {:message "Deleted"}
            :status 200})
       {:body   {:error "Not Found"}
        :status 404})))

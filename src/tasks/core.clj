@@ -60,7 +60,7 @@
                                (tasks.controller/update->task (:id path) body datomic))}
         :delete {:summary    "Delete a tasks by :id"
                  :parameters {:path {:id s/Uuid}}
-                 :responses  {200 {:schema s/Str}
+                 :responses  {200 {:schema {:message s/Str}}
                               404 {:body {:error s/Str}}}
                  :handler    (fn [{{:keys [path]} :parameters}]
                                (tasks.controller/delete-task (:id path) datomic))}}]]]
