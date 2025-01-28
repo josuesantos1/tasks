@@ -10,12 +10,10 @@
   (d/transact datomic [task])
   task)
 
-(s/defn find-task-by-id :- schema.model/Task
+(s/defn find-by-id :- schema.model/Task
   [task-id :- s/Uuid
    db]
-  (ffirst (d/q '[:find (pull ?t [*])
-                 :in $ ?id
-                 :where [?t :task/id ?id]] db task-id)))
+  (d/pull db '[*] [:task/id task-id]))
 
 (s/defn find-all-tasks :- schema.model/Tasks
   [db]

@@ -45,25 +45,32 @@
                             :body   (tasks.controller/all-tasks datomic)})}
        :post {:summary    "Create a task"
               :parameters {:body schema.in/Task}
-              :responses  {201 {:schema schema.out/Tasks}}
+              :responses  {201 {:body schema.out/Task}}
               :handler    (fn [{{:keys [body]} :parameters}]
                             {:status 201
-                             :body (tasks.controller/create-task body datomic)})}}
-      ["/:id"
-       {:tags   ["tasks"]
-        :put    {:summary    "Update a tasks by :id"
-                 :parameters {:path {:id s/Uuid}
-                              :body schema.in/UpdateTask}
-                 :responses  {200 {:schema schema.out/Tasks}
-                              204 {:body {:error s/Str}}}
-                 :handler    (fn [{{:keys [body path]} :parameters}]
-                               (tasks.controller/update->task (:id path) body datomic))}
-        :delete {:summary    "Delete a tasks by :id"
-                 :parameters {:path {:id s/Uuid}}
-                 :responses  {200 {:schema {:message s/Str}}
-                              404 {:body {:error s/Str}}}
-                 :handler    (fn [{{:keys [path]} :parameters}]
-                               (tasks.controller/delete-task (:id path) datomic))}}]]]
+                             :body (tasks.controller/create-task body datomic)})}}]
+     ["/tasks/:id"
+      {:tags   ["tasks"]
+       :put    {:summary    "Update a tasks by :id"
+                :parameters {:path {:id s/Uuid}
+                             :body schema.in/UpdateTask}
+                :responses  {200 {:body schema.out/Task}
+                             204 {:body {:error s/Str}}}
+                :handler    (fn [{{:keys [body path]} :parameters}]
+                              (tasks.controller/update->task (:id path) body datomic))}
+       :delete {:summary    "Delete a tasks by :id"
+                :parameters {:path {:id s/Uuid}}
+                :responses  {200 {:body {:message s/Str}}
+                             404 {:body {:error s/Str}}}
+                :handler    (fn [{{:keys [path]} :parameters}]
+                              (tasks.controller/delete-task (:id path) datomic))}
+       :get {:summary    "Return a tasks by :id"
+             :parameters {:path {:id s/Uuid}}
+             :responses  {200 {:body schema.out/Task}
+                          404 {:body {:error s/Str}}}
+             :handler    (fn [{{:keys [path]} :parameters}]
+                           (tasks.controller/get-tasks-by-id (:id path) datomic))}}]
+     ]
     {:exception pretty/exception
      :data {:coercion reitit.coercion.schema/coercion
             :muuntaja m/instance
@@ -97,6 +104,7 @@
   (reset! server (start)))
 
 (comment
+(create-schema)
   (def server (start))
 
   (.stop server))
