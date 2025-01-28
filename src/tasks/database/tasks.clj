@@ -22,3 +22,13 @@
    datomic]
   (d/transact datomic [task])
   task)
+
+(s/defn delete-task
+  [task-id :- s/Uuid
+   datomic]
+  (let [{id :db/id} (ffirst (d/q '[:find (pull ?t [*])
+                                   :in $ ?id
+                                   :where [?t :task/id ?id]] (d/db datomic) task-id))]
+    (d/transact
+     datomic
+     [[:db.fn/retractEntity id]])))
