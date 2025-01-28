@@ -10,7 +10,6 @@ WORKDIR /app
 
 FROM openjdk:17-jdk-slim
 
-COPY resources ./resources
 COPY --from=build /app/target/app.jar app.jar
 
 EXPOSE 3000
