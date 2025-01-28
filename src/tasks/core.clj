@@ -47,17 +47,19 @@
               :parameters {:body schema.in/Task}
               :responses  {201 {:schema schema.out/Tasks}}
               :handler    (fn [{{:keys [body]} :parameters}]
-                            (tasks.controller/create-task body datomic))}}
+                            {:status 201
+                             :body (tasks.controller/create-task body datomic)})}}
       ["/:id"
        {:tags   ["tasks"]
         :put    {:summary    "Update a tasks by :id"
                  :parameters {:path {:id s/Uuid}
-                              :body schema.in/Task}
+                              :body schema.in/UpdateTask}
                  :responses  {200 {:schema schema.out/Tasks}
                               204 {:body {:error s/Str}}}
-                 :handler    (fn [{{:keys [body]} :parameters}]
+                 :handler    (fn [{{:keys [body path]} :parameters}]
+                               (prn path)
                                {:status 200
-                                :body   body})}
+                                :body   (tasks.controller/update->task (:id path) body datomic)})}
         :delete {:summary    "Delete a tasks by :id"
                  :parameters {:path {:id s/Uuid}
                               :body schema.in/Task}
