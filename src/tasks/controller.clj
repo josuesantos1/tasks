@@ -34,4 +34,10 @@
 (s/defn delete-task :- s/Str
   [task-id :- s/Uuid
    datomic]
-  (database.tasks/delete-task task-id datomic))
+  (let [{id :db/id} (database.tasks/find-task-by-id task-id (d/db datomic))]
+    (if id
+      (do (database.tasks/delete-task id datomic)
+          {:body "Deleted"
+           :status 200})
+      {:body {:error "Not Found"}
+       :status 404})))

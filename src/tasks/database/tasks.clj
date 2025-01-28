@@ -10,6 +10,13 @@
   (d/transact datomic [task])
   task)
 
+(s/defn find-task-by-id :- schema.model/Task
+  [task-id :- s/Uuid
+   db]
+  (ffirst (d/q '[:find (pull ?t [*])
+                 :in $ ?id
+                 :where [?t :task/id ?id]] db task-id)))
+
 (s/defn find-all-tasks :- schema.model/Tasks
   [db]
   (->> db 
@@ -24,11 +31,8 @@
   task)
 
 (s/defn delete-task
-  [task-id :- s/Uuid
+  [task-id :- s/Int
    datomic]
-  (let [{id :db/id} (ffirst (d/q '[:find (pull ?t [*])
-                                   :in $ ?id
-                                   :where [?t :task/id ?id]] (d/db datomic) task-id))]
-    (d/transact
-     datomic
-     [[:db.fn/retractEntity id]])))
+  (d/transact
+   datomic
+   [[:db.fn/retractEntity task-id]]))

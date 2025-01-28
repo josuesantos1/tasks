@@ -63,10 +63,9 @@
         :delete {:summary    "Delete a tasks by :id"
                  :parameters {:path {:id s/Uuid}}
                  :responses  {200 {:schema s/Str}
-                              204 {:body {:error s/Str}}}
+                              404 {:body {:error s/Str}}}
                  :handler    (fn [{{:keys [path]} :parameters}]
-                               {:status 200
-                                :body   (tasks.controller/delete-task (:id path) datomic)})}}]]]
+                               (tasks.controller/delete-task (:id path) datomic))}}]]]
     {:exception pretty/exception
      :data {:coercion reitit.coercion.schema/coercion
             :muuntaja m/instance
