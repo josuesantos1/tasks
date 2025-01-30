@@ -1,5 +1,6 @@
 (ns tasks.database.config
-  (:require [datomic.api :as d]))
+  (:require
+   [datomic.api :as d]))
 
 (def uri "datomic:mem://tasks")
 (d/create-database uri)

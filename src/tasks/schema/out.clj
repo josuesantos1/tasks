@@ -1,4 +1,4 @@
-(ns tasks.schema.out 
+(ns tasks.schema.out
   (:require
    [schema.core :as s]))
 

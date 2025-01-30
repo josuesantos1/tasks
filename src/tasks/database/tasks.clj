@@ -1,4 +1,4 @@
-(ns tasks.database.tasks 
+(ns tasks.database.tasks
   (:require
    [datomic.api :as d]
    [schema.core :as s]
@@ -17,9 +17,9 @@
 
 (s/defn find-all-tasks :- schema.model/Tasks
   [db]
-  (->> db 
+  (->> db
        (d/q '[:find (pull ?t [*])
-                 :where [?t :task/id _]])
+              :where [?t :task/id _]])
        (map first)))
 
 (s/defn update-task :- schema.model/Task

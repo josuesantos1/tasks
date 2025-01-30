@@ -1,4 +1,4 @@
-(ns tasks.controller 
+(ns tasks.controller
   (:require
    [datomic.api :as d]
    [schema.core :as s]
@@ -17,10 +17,10 @@
 
 (s/defn all-tasks :- schema.out/Tasks
   [datomic]
-  (some-> datomic 
-      d/db
-      database.tasks/find-all-tasks
-      tasks.adapter/models->out))
+  (some-> datomic
+          d/db
+          database.tasks/find-all-tasks
+          tasks.adapter/models->out))
 
 (s/defn get-tasks-by-id :- schema.out/Tasks
   [task-id :- s/Uuid

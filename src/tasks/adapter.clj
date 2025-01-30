@@ -1,8 +1,8 @@
-(ns tasks.adapter 
+(ns tasks.adapter
   (:require
    [schema.core :as s]
-   [tasks.schema.model :as schema.model]
    [tasks.schema.in :as schema.in]
+   [tasks.schema.model :as schema.model]
    [tasks.schema.out :as schema.out]))
 
 (defn assoc-some
@@ -22,7 +22,7 @@
 (s/defn in->model :- schema.model/Task
   [{:keys [title description]} :- schema.in/Task]
   {:task/id          (random-uuid)
-   :task/title       title 
+   :task/title       title
    :task/description description
    :task/status      :task.status/todo})
 

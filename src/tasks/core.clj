@@ -69,8 +69,7 @@
              :responses  {200 {:body schema.out/Task}
                           404 {:body {:error s/Str}}}
              :handler    (fn [{{:keys [path]} :parameters}]
-                           (tasks.controller/get-tasks-by-id (:id path) datomic))}}]
-     ]
+                           (tasks.controller/get-tasks-by-id (:id path) datomic))}}]]
     {:exception pretty/exception
      :data {:coercion reitit.coercion.schema/coercion
             :muuntaja m/instance
@@ -92,7 +91,6 @@
                :operationsSorter "alpha"}})
     (ring/create-default-handler))))
 
-
 (defn start []
   (ring.jetty/run-jetty #'app {:port  3000
                                :join? false}))
@@ -104,7 +102,7 @@
   (reset! server (start)))
 
 (comment
-(create-schema)
+  (create-schema)
   (def server (start))
 
   (.stop server))
