@@ -1,4 +1,4 @@
-(ns tasks.adapter-test 
+(ns tasks.adapter-test
   (:require
    [clojure.test :refer [deftest is testing]]
    [matcher-combinators.test :refer [match?]]
@@ -14,7 +14,7 @@
   {:title title
    :description description})
 
-(def model-task 
+(def model-task
   {:task/id id
    :task/title title
    :task/description description
@@ -53,7 +53,7 @@
   (testing "Should return valid tasks schema out data"
     (is (match?
          [{:id id
-          :title title
-          :description description
-          :status status}]
+           :title title
+           :description description
+           :status status}]
          (tasks.adapter/models->out [model-task])))))

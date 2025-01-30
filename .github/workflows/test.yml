@@ -16,7 +16,11 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt-get install -y rlwrap
-            - name: lint
-              run: clj -M:lint
+            - name: Setup clojure-lsp
+              uses: clojure-lsp/setup-clojure-lsp@v1
+              with:
+                  clojure-lsp-version: 2025.01.22-23.28.23
+            - name: Linting 
+              run: clojure-lsp format --dry
             - name: test
               run: clj -M:test
